@@ -33,14 +33,12 @@ class _MyAppState extends State<MyApp> {
       } else {
         incorrectAnswer++;
       }
-      randomNum1 = Random().nextInt(11);
     } else if (buttonNum == 2) {
       if (randomNum2 > randomNum1) {
         correctAnswer++;
       } else {
         incorrectAnswer++;
       }
-      randomNum2 = Random().nextInt(11);
     }
 
     randomNum1 = Random().nextInt(11);
