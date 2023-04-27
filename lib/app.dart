@@ -10,8 +10,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  int randomNum1 = Random().nextInt(11);
-  int randomNum2 = Random().nextInt(11);
+  int randomNum1 = Random().nextInt(101);
+  int randomNum2 = Random().nextInt(101);
   int totalClicks = 0;
   int correctAnswer = 0;
   int incorrectAnswer = 0;
@@ -21,44 +21,48 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     if (randomNum1 == randomNum2) {
-      randomNum1 = Random().nextInt(11);
-      randomNum2 = Random().nextInt(11);
+      insertRandomNumber();
     }
   }
 
+  void insertRandomNumber() {
+    randomNum1 = Random().nextInt(101);
+    randomNum2 = Random().nextInt(101);
+  }
+
   void checkAnswer(int buttonNum) {
-    if (buttonNum == 1) {
-      if (randomNum1 > randomNum2) {
-        correctAnswer++;
-      } else {
-        incorrectAnswer++;
+    if (totalClicks < 10) {
+      if (buttonNum == 1) {
+        if (randomNum1 > randomNum2) {
+          correctAnswer++;
+        } else {
+          incorrectAnswer++;
+        }
+      } else if (buttonNum == 2) {
+        if (randomNum2 > randomNum1) {
+          correctAnswer++;
+        } else {
+          incorrectAnswer++;
+        }
       }
-    } else if (buttonNum == 2) {
-      if (randomNum2 > randomNum1) {
-        correctAnswer++;
-      } else {
-        incorrectAnswer++;
+
+      insertRandomNumber();
+      if (randomNum1 == randomNum2) {
+        insertRandomNumber();
       }
-    }
-
-    randomNum1 = Random().nextInt(11);
-    randomNum2 = Random().nextInt(11);
-
-    if (randomNum1 == randomNum2) {
-      randomNum1 = Random().nextInt(11);
-      randomNum2 = Random().nextInt(11);
+    } else {
+      isGameFinished = true;
     }
 
     totalClicks++;
+  }
 
-    if (totalClicks == 10) {
-      isGameFinished = true;
-    } else if (totalClicks == 11) {
-      totalClicks = 0;
-      isGameFinished = false;
-      correctAnswer = 0;
-      incorrectAnswer = 0;
-    }
+  void reset() {
+    totalClicks = 0;
+    isGameFinished = false;
+    correctAnswer = 0;
+    incorrectAnswer = 0;
+    insertRandomNumber();
   }
 
   @override
@@ -74,8 +78,8 @@ class _MyAppState extends State<MyApp> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    width: 60,
-                    height: 60,
+                    width: 80,
+                    height: 80,
                     child: ElevatedButton(
                       onPressed: () {
                         setState(() {
@@ -86,7 +90,7 @@ class _MyAppState extends State<MyApp> {
                         shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
+                            borderRadius: BorderRadius.circular(50.0),
                           ),
                         ),
                       ),
@@ -102,8 +106,8 @@ class _MyAppState extends State<MyApp> {
                     width: 20,
                   ),
                   SizedBox(
-                    width: 60,
-                    height: 60,
+                    width: 80,
+                    height: 80,
                     child: ElevatedButton(
                       onPressed: () {
                         setState(() {
@@ -114,7 +118,7 @@ class _MyAppState extends State<MyApp> {
                         shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
+                            borderRadius: BorderRadius.circular(50.0),
                           ),
                         ),
                       ),
@@ -166,6 +170,22 @@ class _MyAppState extends State<MyApp> {
                 style: const TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    reset();
+                  });
+                },
+                child: const Text(
+                  "Reset",
+                  style: TextStyle(
+                    fontSize: 20.0,
+                  ),
                 ),
               ),
             ],
